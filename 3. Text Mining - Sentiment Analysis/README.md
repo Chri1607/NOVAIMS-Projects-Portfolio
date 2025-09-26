@@ -65,11 +65,6 @@
 
 ---
 
-## ▶️ How to Run (repo layout)
-- Start from **Explorative Data Analysis.ipynb** to see the cleaning pipeline; then run each task folder.  
-
----
-
 ## 🧠 Key Learnings
 - Careful **text cleaning + task-specific preprocessing** materially improves downstream models. :contentReference[oaicite:17]{index=17}  
 - **Transformer sentiment** is robust on social-media-like reviews; lexicon baselines lag on mixed-polarity long texts. :contentReference[oaicite:18]{index=18}  
