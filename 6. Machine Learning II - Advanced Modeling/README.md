@@ -47,4 +47,4 @@ We worked with two main datasets plus supporting files:
      - *Grocery + Game Combo*  
      - *Salad Builder*  
      - *Buy 2 Get 1 Free Happy Hour*  
-     - *20% Off Petfood with Pantry Essentials*  
+     - *20% Off Petfood with Pantry Essentials*   

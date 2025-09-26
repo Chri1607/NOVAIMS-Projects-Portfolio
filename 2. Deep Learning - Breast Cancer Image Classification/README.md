@@ -77,4 +77,4 @@ This project aimed to build reliable convolutional neural network (CNN) models f
 ## 🚧 Future Work
 - Integrate **explainability methods** (Grad-CAM, SHAP) for medical insights  
 - Explore **hybrid CNN–Transformer architectures**  
-- Apply **Auto-Augment** strategies tailored to medical imaging  
+- Apply **Auto-Augment** strategies tailored to medical imaging   

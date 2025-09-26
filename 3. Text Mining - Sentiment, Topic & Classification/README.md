@@ -60,7 +60,7 @@
 
 ## 💡 Insights
 - Ratings align with **emotion composition** in text (anger ↔ low stars, joy ↔ high stars). :contentReference[oaicite:13]{index=13}  
-- Cuisines with **ample support** are predictable from reviews; long-tail cuisines remain challenging. :contentReference[oaicite:14]{index=14}  
+- Cuisines with **ample support** are predictable from reviews; long-tail cuisines remain challenging. :contentReference[oaicite:14]{index=14}   
 - Co-occurrence graphs surface **menu pairings** (e.g., Italian set-menus) and show **Indian staples (biryani)** as core to demand. :contentReference[oaicite:15]{index=15}
 
 ---

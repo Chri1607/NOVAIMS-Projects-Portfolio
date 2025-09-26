@@ -15,7 +15,7 @@ This project demonstrates the full data science workflow: **web scraping → pre
 - **Content:** Information about professors, courses, publications, and biographies.  
 - **Pipeline Objective:** Automatically scrape and replicate the dataset structure, including additional information accessible via “Know more >”.  
 - **Included:** The cleaned dataset (`nova_ims_teaching_staff_2024-12-20.csv`) is stored in this repository.  
-
+ 
 ---
 
 ## 🧹 Data Wrangling & Analysis
