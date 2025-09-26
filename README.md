@@ -2,8 +2,9 @@
 Academic year 2024/2025 · Data Science Degree
 
 ## 📌 Overview  
-This repository showcases the main academic projects I developed during my year at **NOVA IMS – Universidade Nova de Lisboa**.  
-Each project highlights a different area of **data science and artificial intelligence**, combining real-world datasets, hands-on coding, and applied research.  
+This repository contains the academic projects I developed during my year at NOVA IMS.  
+Each project focuses on a different area of data science and artificial intelligence, using real datasets, practical coding, and applied research.  
+
 
 ---
 
