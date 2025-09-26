@@ -1,10 +1,9 @@
 # 🎓 Nova IMS Projects Portfolio  
-Academic year 2024/2025 · Data Science Degree
+Academic year 2024/2025
 
 ## 📌 Overview  
-This repository contains the academic projects I developed during my year at NOVA IMS.  
+This repository contains a selection of projects developed during my full academic year as an Erasmus student at NOVA IMS – Information Management School.  
 Each project focuses on a different area of data science and artificial intelligence, using real datasets, practical coding, and applied research.  
-
 
 ---
 
