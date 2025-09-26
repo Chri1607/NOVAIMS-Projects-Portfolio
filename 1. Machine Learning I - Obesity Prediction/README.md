@@ -60,3 +60,11 @@ insights that can guide public health strategies.
 - **Physical activity** has protective effect (negative correlation with obesity).  
 - Lifestyle factors like **water intake**, **vegetables**, and **snacking frequency** play a measurable role.  
 - Obesity Type III most prevalent among **ages 26–31**, with rising trend in younger cohorts.  
+
+---
+
+## 🧠 Key Learnings
+- Importance of advanced preprocessing and feature engineering  
+- Need for balanced evaluation metrics in imbalanced multi-class problems  
+- Trade-off between model accuracy and interpretability  
+- Practical public health insights derived from feature importances
