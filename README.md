@@ -27,6 +27,7 @@ Each project highlights a different area of **data science and artificial intell
 6. [**Machine Learning II – Customer Segmentation & Targeted Marketing**](./6.%20Machine%20Learning%20II%20-%20Customer%20Segmentation%20%26%20Targeted%20Marketing)  
    Unsupervised learning for customer segmentation and targeted promotions based on demographics and purchase behavior.  
 
+
 ---
 
 ## 🛠️ Skills & Tools
