@@ -21,10 +21,10 @@ Each project highlights a different area of **data science and artificial intell
 4. [**Programming for Data Science – Web Scraping & Analysis**](./4.%20Programming%20for%20Data%20Science%20-%20Web%20Scraping%20%26%20Analysis)  
    Web scraping of NOVA IMS teaching staff page, data wrangling, exploratory analysis, and predictive modeling.  
 
-5. [**Big Data Storage – MongoDB for Airbnb Lisbon**](./5.%20Big%20Data%20Storage%20-%20MongoDB%20for%20Airbnb%20Lisbon)  
+5. [**Big Data Storage – MongoDB for Airbnb Lisbon**](./5.%20Big%20Data%20Storage%20–%20MongoDB%20for%20Airbnb%20Lisbon)
    Schema design, validation rules, queries, and aggregations for Airbnb data using MongoDB Atlas.  
 
-6. [**Machine Learning II – Customer Segmentation & Targeted Marketing**](./6.%20Machine%20Learning%20II%20-%20Customer%20Segmentation%20%26%20Targeted%20Marketing)  
+6. [**Machine Learning II – Customer Segmentation & Targeted Marketing**](./6.%20Machine%20Learning%20II%20–%20Customer%20Segmentation%20%26%20Targeted%20Marketing)  
    Unsupervised learning for customer segmentation and targeted promotions based on demographics and purchase behavior.  
 
 
