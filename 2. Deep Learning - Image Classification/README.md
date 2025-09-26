@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 - **Course:** Deep Learning — NOVA IMS (2024/25)  
-- **Type:** Group Project (Group 12)  
+- **Type:** Group Project
 - **Goal:** Diagnose breast cancer from histopathology images using deep learning.  
 - **Tasks:**  
   - **Binary classification**: benign vs. malignant  
@@ -15,13 +15,16 @@ This project aimed to build reliable convolutional neural network (CNN) models f
 ---
 
 ## 📊 Dataset & Preprocessing
-- **Source:** [BreaKHis dataset](http://www.inf.ufpr.br/vri/databases/BreaKHis_v1.tar.gz) (histopathology images of breast tissue)  
+- **Source:** [BreaKHis dataset on Kaggle](https://www.kaggle.com/datasets/ambarish/breakhis) (histopathology images of breast tissue)  
+- **Note:** The original dataset (~4GB) is not included in this repository due to size constraints.  
+  Only the processed index file (`processed_image_data_final.csv`) is provided here for convenience.  
 - **Challenge:** Strong class imbalance (malignant > benign)  
 - **Preprocessing:**  
   - Resized images to 256×256 for memory efficiency  
   - Built a `tf.data` pipeline with batching and prefetch for GPU acceleration (Colab)  
   - Applied **class weights** and **augmentation** (flips) on minority classes  
 - **Discarded attempts:** Reinhard color normalization, Laplacian filtering, grayscale conversion (lower performance)  
+
 
 ---
 
