@@ -1,0 +1,234 @@
+//listings
+
+db.runCommand({
+  collMod: "listings",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["id", "name", "price", "room_type", "host_id"],
+      properties: {
+        last_scraped: {
+          bsonType: "date",
+          description: "must be a date (not in the future check later)"
+        },
+        latitude: {
+          bsonType: "double",
+          minimum: -90,
+          maximum: 90,
+          description: "must be between -90 and 90"
+        },
+        longitude: {
+          bsonType: "double",
+          minimum: -180,
+          maximum: 180,
+          description: "must be between -180 and 180"
+        },
+        bathrooms: {
+          bsonType: "double",
+          minimum: 0,
+          description: "must be non-negative"
+        },
+        bedrooms: {
+          bsonType: "double",
+          minimum: 0,
+          description: "must be non-negative"
+        },
+        beds: {
+          bsonType: "double",
+          minimum: 0,
+          description: "must be non-negative"
+        },
+        room_type: {
+          enum: ["Entire home/apt", "Private room", "Shared room", "Hotel room"],
+          description: "must be one of the enum values and is required"
+        },
+        availability_30: {
+          bsonType: "double",
+          minimum: 0,
+          maximum: 30,
+          description: "must be a number between 0 and 30"
+        },
+        availability_60: {
+          bsonType: "double",
+          minimum: 0,
+          maximum: 60,
+          description: "must be a number between 0 and 60"
+        },
+        availability_90: {
+          bsonType: "double",
+          minimum: 0,
+          maximum: 90,
+          description: "must be a number between 0 and 90"
+        },
+        availability_365: {
+          bsonType: "double",
+          minimum: 0,
+          maximum: 365,
+          description: "must be a number between 0 and 365"
+        }
+      }
+    },
+    $expr: {
+      $and: [
+        { $lte: ["$last_scraped", "$$NOW"] },
+        { $gte: ["$maximum_nights", "$minimum_nights"] },
+        {
+          $and: [
+            { $lte: ["$availability_30", "$availability_60"] },
+            { $lte: ["$availability_60", "$availability_90"] },
+            { $lte: ["$availability_90", "$availability_365"] }
+          ]
+        }
+      ]
+    }
+  },
+  validationLevel: "strict"
+})
+
+
+
+//neighbourhoods
+
+db.runCommand({
+  collMod: "neighbourhoods",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["neighbourhood", "neighbourhood_group"],
+      properties: {
+        neighbourhood: {
+          bsonType: "string",
+          description: "must be a non-empty string and is required"
+        },
+        neighbourhood_group: {
+          bsonType: "string",
+          description: "must be a non-empty string and is required"
+        }
+      }
+    }
+  },
+  validationLevel: "strict"
+})
+
+
+
+//neighbourhood_features
+
+db.runCommand({
+  collMod: "neighbourhood_features",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["geometry", "properties"],
+      properties: {
+        geometry: {
+          bsonType: "object",
+          required: ["coordinates"],
+          properties: {
+            coordinates: {
+              bsonType: "array",
+              items: {
+                bsonType: "array",
+                items: {
+                  bsonType: "array",
+                  minItems: 2,
+                  maxItems: 2,
+                  items: {
+                    bsonType: "number"
+                  }
+                }
+              },
+              description: "must be an array of coordinate arrays"
+            }
+          }
+        },
+        properties: {
+          bsonType: "object",
+          required: ["neighbourhood", "neighbourhood_group"],
+          properties: {
+            neighbourhood: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            neighbourhood_group: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            }
+          }
+        }
+      }
+    }
+  },
+  validationLevel: "strict"
+})
+
+
+
+//reviews
+
+db.runCommand({
+  collMod: "reviews",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["date", "reviewer_id", "comments", "listing_id"],
+      properties: {
+        date: {
+          bsonType: "date",
+          description: "must be a date (not in the future check later)"
+        },
+        comments: {
+          bsonType: "string",
+          minLength: 1,
+          description: "must be a non-empty string and is required"
+        }
+      }
+    },
+    $expr: {
+      $and: [
+        {
+          $lte: ["$date", "$$NOW"]
+        }
+      ]
+    }
+  },
+  validationLevel: "strict"
+})
+
+
+
+//hosts
+
+db.runCommand({
+  collMod: "hosts",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["host_name", "host_since", "host_is_superhost", "host_listings_count"],
+      properties: {
+        host_name: {
+          bsonType: "string",
+          minLength: 1,
+          description: "must be a non-empty string and is required"
+        },
+        host_since: {
+          bsonType: "date",
+          description: "must be a valid date and is required"
+        },
+        host_is_superhost: {
+          bsonType: "bool",
+          description: "must be a boolean"
+        },
+        host_listings_count: {
+          bsonType: "number",
+          minimum: 0,
+          description: "must be a non-negative number"
+        }
+      }
+    },
+    $expr: {
+      $lte: ["$host_since", "$$NOW"]
+    }
+  },
+  validationLevel: "strict"
+})

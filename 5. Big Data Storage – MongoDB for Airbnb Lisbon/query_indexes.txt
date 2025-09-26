@@ -1,0 +1,108 @@
+// QUERY WITHOUT INDEX
+db.listings.explain("executionStats").aggregate([
+  {
+    $match: {
+      neighbourhood_cleansed: {
+        $in: ["Santa Maria Maior", "Misericrdia"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$neighbourhood_cleansed",
+      avg_price: { $avg: "$price" }
+    }
+  }
+])
+
+// CREAT INDEX ON neighbourhood_cleansed
+db.listings.createIndex({ neighbourhood_cleansed: 1 })
+
+// QUERY WITH INDEX
+db.listings.explain("executionStats").aggregate([
+  {
+    $match: {
+      neighbourhood_cleansed: {
+        $in: ["Santa Maria Maior", "Misericrdia"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$neighbourhood_cleansed",
+      avg_price: { $avg: "$price" }
+    }
+  }
+])
+
+
+
+
+== Query 1: Average Price by Neighbourhood ==
+
+Pipeline:
+- $match: Filter by 'neighbourhood_cleansed' in ["Santa Maria Maior", "Misericrdia"]
+- $group: Average of 'price' per neighbourhood
+
+Index used:
+db.listings.createIndex({ neighbourhood_cleansed: 1 })
+
+Performance:
+- Without index: COLLSCAN, 24,264 docs read, 41 ms
+- With index:    IXSCAN, 5,885 docs read, 20 ms
+
+
+
+
+
+// QUERY ON room_type FOR neighbourhood_cleansed = Areeiro OR Arroios
+db.listings.explain("executionStats").aggregate([
+  {
+    $match: {
+      neighbourhood_cleansed: {
+        $in: ["Areeiro", "Arroios"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$room_type",
+      total_listings: { $sum: 1 }
+    }
+  }
+])
+
+
+// CREATION OF COMPOSITE INDEX ON neighbourhood_cleansed AND room_type
+db.listings.createIndex({ neighbourhood_cleansed: 1, room_type: 1 })
+
+db.listings.explain("executionStats").aggregate([
+  {
+    $match: {
+      neighbourhood_cleansed: {
+        $in: ["Areeiro", "Arroios"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$room_type",
+      total_listings: { $sum: 1 }
+    }
+  }
+])
+
+
+== Query 2: Room Type Count in Two Neighbourhoods ==
+
+Pipeline:
+- $match: Filter by 'neighbourhood_cleansed' in ["Areeiro", "Arroios"]
+- $group: Count listings by 'room_type'
+
+Index used:
+db.listings.createIndex({ neighbourhood_cleansed: 1, room_type: 1 })
+
+Performance:
+- Without index: COLLSCAN, 24,264 docs read, 35 ms
+- With index:    IXSCAN, 2,518 keys read, 3 ms
+

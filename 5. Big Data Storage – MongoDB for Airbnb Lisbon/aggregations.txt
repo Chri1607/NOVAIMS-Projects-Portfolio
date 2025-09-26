@@ -1,0 +1,213 @@
+//Average Price by Neighborhood with Room Statistics
+
+db.listings.aggregate([
+  {
+    $group: {
+      _id: "$neighbourhood_cleansed",
+      avg_price: { $avg: "$price" },
+      min_price: { $min: "$price" },
+      max_price: { $max: "$price" },
+      total_listings: { $sum: 1 },
+      avg_bedrooms: { $avg: "$bedrooms" }
+    }
+  },
+  {
+    $sort: { avg_price: -1 }
+  }
+])
+
+
+
+//Host Performance Analysis
+
+db.listings.aggregate([
+  {
+    $lookup: {
+      from: "hosts",
+      localField: "host_id",
+      foreignField: "host_id",
+      as: "host_info"
+    }
+  },
+  {
+    $unwind: "$host_info"  
+  },
+  {
+    $group: {
+      _id: "$host_id",
+      host_name: { $first: "$host_info.host_name" },  
+      total_listings: { $sum: 1 },
+      avg_rating: { $avg: "$review_scores_rating" },
+      total_reviews: { $sum: "$number_of_reviews" },
+      avg_price: { $avg: "$price" }
+    }
+  },
+  {
+    $match: {
+      total_listings: { $gt: 1 },
+      avg_rating: { $exists: true }
+    }
+  },
+  {
+    $sort: { total_listings: -1 }
+  },
+  {
+    $limit: 20
+  }
+])
+
+
+
+//Neighborhood Quality Analysis
+
+db.listings.aggregate([
+  {
+    $group: {
+      _id: "$neighbourhood_cleansed",
+      avg_cleanliness: { $avg: "$review_scores_cleanliness" },
+      avg_location: { $avg: "$review_scores_location" },
+      avg_value: { $avg: "$review_scores_value" },
+      avg_price: { $avg: "$price" },
+      total_listings: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      avg_cleanliness: { $exists: true },
+      avg_location: { $exists: true },
+      avg_value: { $exists: true }
+    }
+  },
+  {
+    $addFields: {
+      overall_score: {
+        $avg: ["$avg_cleanliness", "$avg_location", "$avg_value"]
+      }
+    }
+  },
+  {
+    $sort: { overall_score: -1 }
+  }
+])
+
+
+
+//Minimum Nights Impact Analysis
+
+db.listings.aggregate([
+  {
+    $bucket: {
+      groupBy: "$minimum_nights",
+      boundaries: [1, 2, 3, 7, 14, 30, 90],
+      default: "90+",
+      output: {
+        avg_price: { $avg: "$price" },
+        listing_count: { $sum: 1 },
+        avg_occupancy: {
+          $avg: {
+            $subtract: [
+              100,
+              {
+                $multiply: [
+                  "$availability_365",
+                  100 / 365
+                ]
+              }
+            ]
+          }
+        },
+        avg_rating: { $avg: "$review_scores_rating" }
+      }
+    }
+  }
+])
+
+
+
+//Property Type Price Analysis
+
+db.listings.aggregate([
+  {
+    $group: {
+      _id: {
+        property_type: "$property_type",
+        room_type: "$room_type"
+      },
+      avg_price: { $avg: "$price" },
+      min_price: { $min: "$price" },
+      max_price: { $max: "$price" },
+      listing_count: { $sum: 1 },
+      avg_rating: { $avg: "$review_scores_rating" }
+    }
+  },
+  {
+    $match: {
+      listing_count: { $gt: 5 }
+    }
+  },
+  {
+    $sort: { avg_rating: -1 }
+  }
+])
+
+
+
+//Specific amenities analyzes
+
+db.listings.aggregate([
+  {
+    $unwind: "$amenities"
+  },
+  {
+    $group: {
+      _id: "$amenities",
+      listings_with_amenity: { $sum: 1 },
+      avg_price_with: { $avg: "$price" },
+      avg_rating_with: { $avg: "$review_scores_rating" }
+    }
+  },
+  {
+    $lookup: {
+      from: "listings",
+      pipeline: [
+        {
+          $group: {
+            _id: null,
+            total_listings: { $sum: 1 }
+          }
+        }
+      ],
+      as: "overall_stats"
+    }
+  },
+  {
+    $unwind: "$overall_stats"
+  },
+  {
+    $addFields: {
+      presence_percentage: {
+        $multiply: [
+          {
+            $divide: [
+              "$listings_with_amenity",
+              "$overall_stats.total_listings"
+            ]
+          },
+          100
+        ]
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      listings_with_amenity: 1,
+      avg_price_with: 1,
+      avg_rating_with: 1,
+      presence_percentage: 1
+    }
+  },
+  {
+    $sort: { presence_percentage: -1 }
+  }
+])
